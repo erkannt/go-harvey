@@ -14,5 +14,12 @@ Explore containerised web apps that use SQLite for persistance.
 - [Appropriate Uses For SQLite](https://sqlite.org/whentouse.html)
 - [ How To Corrupt An SQLite Database File](https://sqlite.org/howtocorrupt.html)
 
+## How to use
+
+In separate terminals:
+
+- `make up` to start single container
+- `make hammer` to hit container with requests using [hey](https://github.com/rakyll/hey) for 10s
+
 
 
