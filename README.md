@@ -33,9 +33,17 @@ Explore containerised web apps that use SQLite for persistance.
 
 ### With caddy
 
-- `make up COMPOSE=docker-compose.caddy.yaml`
+- `make up COMPOSE=docker-compose.caddy-proxy.yaml`
 - `make hammer`
-- in separate terminal: `make release COMPOSE=docker-compose.caddy.yaml` to recreate container every 0.5s
+- in separate terminal: `make release COMPOSE=docker-compose.caddy-proxy.yaml`
 
-`hey` reports 502s from caddy
+`hey` reports 10% 502s from caddy
+
+### With retries
+
+By setting `lb_retries` to a high number we can avoid having requests fail. However response duration suffers from our frequent restarts
+
+- `make up COMPOSE=docker-compose.caddy-retry.yaml`
+- `make hammer`
+- in separate terminal: `make release COMPOSE=docker-compose.caddy-retry.yaml`
 
