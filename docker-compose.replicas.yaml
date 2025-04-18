@@ -2,6 +2,8 @@ services:
   harvey:
     build:
       context: .
+    volumes:
+      - ./data:/data
     labels:
       caddy: ":80"
       caddy.reverse_proxy: "harvey:8080"
@@ -10,6 +12,8 @@ services:
   harvey-replica:
     build:
       context: .
+    volumes:
+      - ./data:/data
     labels:
       caddy: ":80"
       caddy.reverse_proxy: "harvey-replica:8080"

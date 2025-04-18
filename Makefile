@@ -20,3 +20,7 @@ rolling-release:
 		docker compose -f $(COMPOSE) up --force-recreate --wait harvey; \
 		docker compose -f $(COMPOSE) up --force-recreate --wait harvey-replica; \
 	done
+
+.PHONY: logs
+logs:
+	docker compose -f $(COMPOSE) logs -f
