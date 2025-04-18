@@ -5,4 +5,8 @@ hammer:
 
 .PHONY: up
 up:
-	docker compose up --build
+	docker compose up --build --wait
+
+.PHONY: release
+release:
+	while true; do docker compose up --force-recreate -d; sleep 0.5; done

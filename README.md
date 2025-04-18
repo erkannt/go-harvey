@@ -16,10 +16,19 @@ Explore containerised web apps that use SQLite for persistance.
 
 ## How to use
 
-In separate terminals:
+### Naive happy case
 
 - `make up` to start single container
 - `make hammer` to hit container with requests using [hey](https://github.com/rakyll/hey) for 10s
 
+`hey` reports 70k req/s with no errors.
+
+### Dropped traffic during release
+
+- `make up`
+- `make hammer | less`
+- in separate terminal: `make release` to recreate container every 0.5s
+
+`hey` reports errors due to port not listening and peer resetting connection.
 
 
