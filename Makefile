@@ -8,8 +8,15 @@ hammer:
 .PHONY: up
 up:
 	docker network create caddy || true
-	docker compose -f $(COMPOSE) up --build --wait
+	docker compose -f $(COMPOSE) up --build --wait --remove-orphans
 
 .PHONY: release
 release:
 	while true; do docker compose -f $(COMPOSE) up --force-recreate -d harvey; sleep 2; done
+
+.PHONY: rolling-release
+rolling-release:
+	while true; do \
+		docker compose -f $(COMPOSE) up --force-recreate --wait harvey; \
+		docker compose -f $(COMPOSE) up --force-recreate --wait harvey-replica; \
+	done

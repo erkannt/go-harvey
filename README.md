@@ -26,16 +26,16 @@ Explore containerised web apps that use SQLite for persistance.
 ### Dropped traffic during release
 
 - `make up`
-- `make hammer | less`
 - in separate terminal: `make release` to recreate container every 2s
+- `make hammer | less`
 
 `hey` reports errors due to port not listening and peer resetting connection.
 
 ### With caddy
 
 - `make up COMPOSE=docker-compose.caddy-proxy.yaml`
-- `make hammer`
 - in separate terminal: `make release COMPOSE=docker-compose.caddy-proxy.yaml`
+- `make hammer`
 
 `hey` reports 10% 502s from caddy
 
@@ -45,6 +45,15 @@ By setting `lb_retries` to a high number we can avoid having requests fail. Howe
 Sleeping for 2s between restarts lets us achieve 9k req/s with under 1% of responses taking over 1s.
 
 - `make up COMPOSE=docker-compose.caddy-retry.yaml`
-- `make hammer`
 - in separate terminal: `make release COMPOSE=docker-compose.caddy-retry.yaml`
+- `make hammer`
 
+### Manual rolling release
+
+`docker compose up` has no mechanism to recreate containers sequentially so we have to do this manually.
+
+Continuous but sequential container recreations result in higher req/s (ca. 17k) but we still have 0.1% or requests taking 1s.
+
+- `make up COMPOSE=docker-compose.replicas.yaml`
+- `make hammer`
+- in separate terminal: `make rolling-release COMPOSE=docker-compose.replicas.yaml`
