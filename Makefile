@@ -12,4 +12,4 @@ up:
 
 .PHONY: release
 release:
-	while true; do docker compose -f $(COMPOSE) up --force-recreate -d harvey; sleep 0.5; done
+	while true; do docker compose -f $(COMPOSE) up --force-recreate -d harvey; sleep 2; done

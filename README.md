@@ -27,7 +27,7 @@ Explore containerised web apps that use SQLite for persistance.
 
 - `make up`
 - `make hammer | less`
-- in separate terminal: `make release` to recreate container every 0.5s
+- in separate terminal: `make release` to recreate container every 2s
 
 `hey` reports errors due to port not listening and peer resetting connection.
 
@@ -41,7 +41,8 @@ Explore containerised web apps that use SQLite for persistance.
 
 ### With retries
 
-By setting `lb_retries` to a high number we can avoid having requests fail. However response duration suffers from our frequent restarts
+By setting `lb_retries` to a high number we can avoid having requests fail. However response duration suffers from our frequent restarts.
+Sleeping for 2s between restarts lets us achieve 9k req/s with under 1% of responses taking over 1s.
 
 - `make up COMPOSE=docker-compose.caddy-retry.yaml`
 - `make hammer`
