@@ -31,4 +31,11 @@ Explore containerised web apps that use SQLite for persistance.
 
 `hey` reports errors due to port not listening and peer resetting connection.
 
+### With caddy
+
+- `make up COMPOSE=docker-compose.caddy.yaml`
+- `make hammer`
+- in separate terminal: `make release COMPOSE=docker-compose.caddy.yaml` to recreate container every 0.5s
+
+`hey` reports 502s from caddy
 

@@ -1,7 +1,7 @@
 FROM golang:1.24 AS builder
 
 WORKDIR /app
-COPY . .
+COPY go.mod main.go ./
 RUN CGO_ENABLED=0 go build -o harvey .
 
 FROM scratch AS prod
