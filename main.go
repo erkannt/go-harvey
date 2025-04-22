@@ -27,15 +27,19 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		_, err := db.Exec(`INSERT INTO test (value) VALUES (?)`, uuid.NewString())
-		if err != nil {
-			fmt.Println(err)
-			http.Error(w, "Insert failed", http.StatusInternalServerError)
-			return
-		}
-		fmt.Fprint(w, "inserted")
+		insertRow(db, w)
 	})
 
 	fmt.Println("Server running at http://localhost:8080/")
 	http.ListenAndServe(":8080", nil)
+}
+
+func insertRow(db *sql.DB, w http.ResponseWriter) {
+	_, err := db.Exec(`INSERT INTO test (value) VALUES (?)`, uuid.NewString())
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Insert failed", http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprint(w, "inserted")
 }
