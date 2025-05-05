@@ -65,3 +65,4 @@ Using litestream for disaster recovery.
 - `make up COMPOSE=docker-compose.litestream.yaml`
 - `make hammer`
 - `make status`
+- `make disaster`
