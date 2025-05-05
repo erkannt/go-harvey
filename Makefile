@@ -4,14 +4,13 @@ COMPOSE ?= docker-compose.yaml
 hammer:
 	hey -z 10s http://localhost:8080
 
-.PHONY: disaster
-disaster:
-	docker kill $$(docker ps -q --filter name=harvey-harvey) || true
-	rm -f data/harvey/*
-
 .PHONY: status
 status:
 	@curl http://localhost:8080/status
+
+.PHONY: stop
+stop:
+	docker compose -f $(COMPOSE) down
 
 .PHONY: up
 up:

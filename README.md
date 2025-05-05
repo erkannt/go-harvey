@@ -65,4 +65,15 @@ Using litestream for disaster recovery.
 - `make up COMPOSE=docker-compose.litestream.yaml`
 - `make hammer`
 - `make status`
-- `make disaster`
+- `make destroy COMPOSE=docker-compose.litestream.yaml`
+- `sudo rm -rf ./data/harvey/*`
+
+The only state that remains is that of minio which contains the bucket that litestream has been streaming to.
+
+- `make up COMPOSE=docker-compose.litestream.yaml`
+- `make status`
+
+The data should have been restored.
+
+See `docker logs go-harvey-litestream-1 | head` for litestream logs.
+
