@@ -30,6 +30,11 @@ func main() {
 		insertRow(db, w)
 	})
 
+	http.HandleFunc("/status", func(w http.ResponseWriter, r *http.Request) {
+		rowCount := getRowCount(db, w)
+		fmt.Fprintf(w, "Total rows: %d", rowCount)
+	})
+
 	fmt.Println("Server running at http://localhost:8080/")
 	http.ListenAndServe(":8080", nil)
 }
@@ -42,4 +47,15 @@ func insertRow(db *sql.DB, w http.ResponseWriter) {
 		return
 	}
 	fmt.Fprint(w, "inserted")
+}
+
+func getRowCount(db *sql.DB, w http.ResponseWriter) int {
+	var count int
+	err := db.QueryRow(`SELECT COUNT(*) FROM test`).Scan(&count)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "getRowCount failed", http.StatusInternalServerError)
+		return 0
+	}
+	return count
 }

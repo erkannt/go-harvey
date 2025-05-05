@@ -57,3 +57,11 @@ Continuous but sequential container recreations result in higher req/s (ca. 17k)
 - `make up COMPOSE=docker-compose.replicas.yaml`
 - `make hammer`
 - in separate terminal: `make rolling-release COMPOSE=docker-compose.replicas.yaml`
+
+### Disaster recovery
+
+Using litestream for disaster recovery.
+
+- `make up COMPOSE=docker-compose.litestream.yaml`
+- `make hammer`
+- `make status`

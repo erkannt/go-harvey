@@ -4,6 +4,9 @@ COMPOSE ?= docker-compose.yaml
 hammer:
 	hey -z 10s http://localhost:8080
 
+.PHONY: status
+status:
+	@curl http://localhost:8080/status
 
 .PHONY: up
 up:
