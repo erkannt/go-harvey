@@ -5,12 +5,19 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/google/uuid"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
+	err := os.MkdirAll("./data", os.ModePerm)
+	if err != nil {
+		fmt.Printf("Error creating data directory: %v\n", err)
+		return
+	}
+
 	db, err := sql.Open("sqlite3", "./data/state.db")
 	if err != nil {
 		fmt.Printf("Error opening database: %v\n", err)
@@ -19,7 +26,7 @@ func main() {
 	defer db.Close()
 
 	_, err = db.Exec(`
-  PRAGMA journal_mode=wal;
+	PRAGMA journal_mode=wal;
 	CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, value INT)
 	`)
 	if err != nil {
