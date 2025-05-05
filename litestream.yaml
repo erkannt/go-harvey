@@ -1,0 +1,9 @@
+dbs:
+  - path: /data/state.db
+    replicas:
+      - url: s3://litestream/backup
+        endpoint: http://minio:9000
+        region: us-east-1
+        access-key-id: minioAccessKey
+        secret-access-key: minioSecretKey
+        skip-verify: true

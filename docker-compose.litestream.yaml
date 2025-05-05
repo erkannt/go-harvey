@@ -3,7 +3,7 @@ services:
     build:
       context: .
     volumes:
-      - ./data:/data
+      - ./data/harvey:/data
     labels:
       caddy: ":80"
       caddy.reverse_proxy: "harvey:8080"
@@ -13,7 +13,7 @@ services:
     build:
       context: .
     volumes:
-      - ./data:/data
+      - ./data/harvey:/data
     labels:
       caddy: ":80"
       caddy.reverse_proxy: "harvey-replica:8080"
@@ -25,3 +25,47 @@ services:
       - 8080:80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  litestream:
+    image: litestream/litestream
+    volumes:
+      - ./litestream.yaml:/etc/litestream.yaml
+      - ./data/harvey:/data
+    command: ["replicate", "-config", "/etc/litestream.yaml"]
+    depends_on:
+      minio:
+        condition: service_healthy
+      create-bucket:
+        condition: service_completed_successfully
+
+  minio:
+    image: quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z
+    container_name: minio
+    command: server --console-address ":9001" /data
+    environment:
+      MINIO_ROOT_USER: minioAccessKey
+      MINIO_ROOT_PASSWORD: minioSecretKey
+    ports:
+      - "9000:9000" # S3 API
+      - "9001:9001" # MinIO Console
+    volumes:
+      - ./data/minio:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      start_interval: 1s
+      start_period: 30s
+      retries: 3
+
+  create-bucket:
+    image: minio/mc
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5;
+        mc alias set myminio http://minio:9000 minioAccessKey minioSecretKey;
+        mc mb --ignore-existing myminio/litestream;
+      "

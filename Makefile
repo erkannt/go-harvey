@@ -7,7 +7,7 @@ hammer:
 .PHONY: disaster
 disaster:
 	docker kill $$(docker ps -q --filter name=harvey-harvey) || true
-	rm -f data/*
+	rm -f data/harvey/*
 
 .PHONY: status
 status:
